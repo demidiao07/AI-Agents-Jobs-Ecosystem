@@ -1,5 +1,5 @@
 # Generative AI Assignment 1 – Part 1
-**Name:** Demi (Wenshu Diao)
+**Name:** Wenshu (Demi) Diao
 
 ## Overview
 This project implements a vector database pipeline for AI agent–related content using:
@@ -38,24 +38,28 @@ pip install -r requirements.txt
 ```
 
 ### 3. Set OpenAI API key
-Set the API key as an environment variable(I do not upload my API Key):
+Set the API key as an environment variable (I do not upload my API key):
 
 ```
 export OPENAI_API_KEY="your_api_key_here"
 ```
 
 ## Dataset
-The dataset AI_Agents_Ecosystem_2026.csv contains structured information about emerging AI agent roles, required skills, tools, and industry applications observed in 2025–2026. The data focuses on modern agentic workflows, multi-agent orchestration frameworks, and applied use cases across finance, software engineering, and enterprise automation.
+The dataset **AI_Agents_Ecosystem_2026.csv** contains structured information about emerging AI agent roles, required skills, tools, and industry applications observed in 2025–2026. The data focuses on modern agentic workflows, multi-agent orchestration frameworks, and applied use cases across finance, software engineering, and enterprise automation.
 
-Why the Dataset Is Out of Scope of the LLM The LLM used in this project (e.g., GPT-4o-mini) has a knowledge cutoff in late 2023. Many of the roles, tools, and ecosystem developments represented in this dataset emerged after that cutoff, making the information unavailable to the base model without retrieval.
+### Why the Dataset Is Out of Scope of the LLM
+The language models and embedding models used in this project have a knowledge cutoff in late 2023. Many of the roles, tools, and ecosystem developments represented in this dataset emerged after that cutoff, making the information unavailable to the base model without retrieval.
 
-Why RAG Is Appropriate Because the dataset contains recent, domain-specific information that evolves rapidly, retrieval-augmented generation is necessary to ground model responses in up-to-date facts and reduce hallucinations when answering questions about modern AI agent ecosystems.
+### Why RAG Is Appropriate 
+Because the dataset contains recent, domain-specific information that evolves rapidly, retrieval-augmented generation is necessary to ground model responses in up-to-date facts and reduce hallucinations when answering questions about modern AI agent ecosystems.
 
-Download from Kaggle:
-[https://www.kaggle.com/datasets/nudratabbas/ai-agents-jobs-ecosystem-2026-real-world]
+**Dataset source (Kaggle):**  
+👉 [AI Agents Jobs Ecosystem 2026 – Real World](https://www.kaggle.com/datasets/nudratabbas/ai-agents-jobs-ecosystem-2026-real-world)
 
-After downloading, place the CSV at:
-```bash
+**Note:** The dataset is **not included** in this repository in accordance with assignment instructions.
+
+After downloading, place the CSV file at:
+```text
 data/ai_agents_jobs/AI_Agents_Ecosystem_2026.csv
 ```
 
@@ -101,4 +105,7 @@ python src/retrieval_examples.py
 ```
 
 ## Sample Outputs
-
+See `sample_outputs.ipynb` for:
+- chunking experiments with different chunk sizes
+- embedding dimension sanity checks
+- ChromaDB retrieval examples with top-k neighbors
