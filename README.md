@@ -1,4 +1,4 @@
-# Generative AI Assignment 1 – Part 1
+# Generative AI Assignment 1
 **Name:** Wenshu (Demi) Diao
 
 ## Overview
@@ -69,6 +69,31 @@ data/ai_agents_jobs/AI_Agents_Ecosystem_2026.csv
 
 ## How to Run 
 
+```md
+### Part 1
+# Q1: ChromaDB smoketest
+python src/chroma_smoketest.py
+
+# Q3: Chunking + chunk experiments
+python src/chunk_smoketest.py
+
+# Q4: Embedding smoketest
+python src/embedding_smoketest.py
+
+# Q5: Ingest (chunk + embed + store in Chroma)
+python src/ingest_to_chroma.py
+
+# Q6/Q7: Retrieval validation/examples
+python src/holdout_retrieval_test.py
+python src/retrieval_examples.py
+
+### Part 2
+# Q2: Baseline vs Simple RAG
+python src/basic_rag_langchain.py
+
+# Q3/Q4: Baseline vs Simple RAG vs HyDE vs Rerank (5 questions)
+python src/rag_hyde_rerank.py
+```
 ### Q1: ChromaDB smoketest
 
 I chose ChromaDB as my vector database because it is free, open-source, and supports persistent local storage. I created a persistent client, created a collection, inserted sample documents with metadata, and verified similarity-based retrieval using a test query.
@@ -120,6 +145,79 @@ I ran five representative natural-language queries and retrieved the top-5 most 
 ```bash
 python src/retrieval_examples.py
 ```
+
+
+For Part 2, I used OpenAI’s gpt-4o-mini as the language model for answer generation. The model was accessed via the OpenAI API using the provided openai.txt key on DeepDish, ensuring no API keys were committed to the repository. A smaller model was chosen to stay within usage limits while remaining sufficient for RAG-based response synthesis.
+
+Question 2:The baseline LLM produced a general description of multi-agent orchestration and speculative statements about LangGraph, without any ability to reference the dataset. In contrast, the Simple RAG system retrieved relevant dataset passages and generated a grounded answer citing specific entries (e.g., latency-aware orchestration for parallel multi-agent systems and an orchestration layer for explainable agents). This demonstrates that retrieval improves factual grounding and reduces hallucination by restricting the answer to retrieved evidence.
+
+Question 4:
+For each of five representative questions, we evaluated four configurations: (1) a baseline LLM without retrieval, (2) simple RAG using vector similarity search, (3) RAG with HyDE-based query rewriting, and (4) RAG with LLM-based reranking.
+The baseline LLM frequently hallucinated or relied on outdated pre-2023 knowledge. Simple RAG substantially improved factual grounding but sometimes retrieved loosely related documents. HyDE improved recall by expanding the query into a hypothetical answer, often surfacing more semantically aligned documents. Reranking produced the most focused responses by selecting passages most relevant to the query intent, particularly for nuanced questions involving safety, evaluation, and tool usage.
+
+Q5: Effect of RAG Variants on Output Quality
+This section analyzes how each retrieval strategy affects answer quality for the task of querying a post-2023 AI agent ecosystem dataset, which is out of scope for the base language model.
+The goal is to produce accurate, grounded, and traceable answers to questions about tools, agent frameworks, safety, evaluation, and deployment practices.
+
+Original LLM (No RAG)
+Observed behavior
+* Generated plausible but hallucinated tools, frameworks, and citations (e.g., JADE, ROS, Kafka).
+* Relied on generic, pre-2023 knowledge.
+* Could not reference dataset-specific titles, dates, or links.
+Impact
+* Fails to meet the task requirements due to lack of grounding.
+* Demonstrates that the base LLM alone cannot answer questions about this dataset reliably.
+Conclusion A non-RAG baseline is insufficient because the dataset contains recent (2025–2026) information unavailable to the model at training time.
+
+Simple RAG (Vector Retrieval + Top-K)
+Observed improvements
+* Answers became grounded in actual dataset entries (e.g., 2026 arXiv papers, HackerNews sources).
+* Outputs included source titles, dates, and links, enabling traceability.
+* Hallucinations were significantly reduced.
+Limitations
+* Retrieval sometimes returned partially relevant or noisy documents, especially given the mixed nature of the dataset (jobs, research papers, forum posts).
+* Pure similarity-based retrieval occasionally missed the most relevant passages.
+Conclusion Simple RAG establishes factual grounding but is sensitive to retrieval noise and query phrasing.
+
+RAG + HyDE (Hypothetical Document Embeddings)
+Observed improvements
+* HyDE improved recall, especially for abstract or underspecified questions.
+* Particularly effective for:
+    * Tool-integrated reasoning
+    * Agent evaluation and safety themes
+    * Multi-agent orchestration concepts
+* Surfaced relevant 2026 sources that simple RAG sometimes missed.
+Tradeoffs
+* Occasionally retrieved conceptually related but less focused passages.
+* Depends on the quality of the LLM-generated hypothetical answer.
+Conclusion HyDE improves coverage and robustness when querying a rapidly evolving domain with heterogeneous documents.
+
+RAG + Reranking (LLM-Based Passage Selection)
+Observed improvements
+* Produced the most precise and focused answers across all evaluated questions.
+* Effectively filtered out marginally relevant candidates from a large retrieval set.
+* Strong performance on:
+    * Tool-calling and safety questions
+    * Deployment constraints (latency, access control, monitoring)
+    * Fine-grained analytical queries
+Cost
+* Higher latency and compute due to LLM reranking.
+* Requires careful prompt design.
+Conclusion Reranking yields the highest answer quality by prioritizing relevance over raw similarity, making it the best-performing approach for complex analytical questions.
+
+Overall Comparison
+Method	Grounded in Dataset	Recall	Precision	Notes
+Original LLM	❌	❌	❌	Hallucinates
+Simple RAG	✅	⚠️	⚠️	Baseline grounding
+RAG + HyDE	✅	✅	⚠️	Better recall
+RAG + Reranking	✅	✅	✅	Best overall
+Final Takeaway
+Each enhancement addresses a different failure mode of retrieval-augmented generation:
+* Simple RAG provides grounding.
+* HyDE improves recall for ambiguous or abstract queries.
+* Reranking maximizes relevance and answer quality.
+For this dataset and task, RAG with reranking consistently produced the strongest results, while HyDE offered meaningful improvements over basic retrieval in exploratory queries.
+
 
 ## Sample Outputs
 See `sample_outputs.ipynb` for:
