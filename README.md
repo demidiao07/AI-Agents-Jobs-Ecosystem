@@ -18,3 +18,29 @@ The dataset can be reused in later assignments for few-shot prompting and fine-t
 **4. Practical size and accessibility**
 Compared to very large social-media datasets, this dataset is easier to download and process while still being sufficiently complex to demonstrate RAG techniques.
 We use GPT-4o-mini as the LLM in this project because it supports in-context learning and reasoning while remaining computationally efficient.
+
+# Generative AI Assignment 1
+**Name:** Wenshu Diao
+
+## Overview
+This project builds a vector database from the Kaggle dataset *AI Agents Jobs Ecosystem 2026 – Real World*.
+It:
+1) Converts each row into a text document
+2) Chunks documents using a recursive text splitter
+3) Generates embeddings (OpenAI text-embedding-3-small)
+4) Stores vectors + metadata in a persistent ChromaDB collection
+5) Validates retrieval using a holdout set
+
+## Dataset
+Download from Kaggle:
+- AI Agents Jobs Ecosystem 2026 – Real World  
+https://www.kaggle.com/datasets/nudratabbas/ai-agents-jobs-ecosystem-2026-real-world
+
+After downloading, place the CSV locally (do not commit it) at:
+- `AI_Agents_Ecosystem_2026.csv`
+
+## Setup
+```bash
+python -m venv .venv
+source .venv/bin/activate   # mac/linux
+pip install -r requirements.txt
