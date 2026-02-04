@@ -159,6 +159,8 @@ Five representative questions were evaluated across four configurations:
 - Filtered noisy retrieval candidates effectively
 - Higher computational cost due to reranking
 
+In some cases (e.g., Q2 with HyDE), the system correctly abstains when retrieved context is insufficient, demonstrating controlled non-hallucination behavior.
+
 #### Final Takeaway:
 Simple RAG establishes grounding, HyDE improves recall, and reranking maximizes relevance. For this dataset and task, RAG with reranking consistently produced the highest-quality results, while HyDE offered meaningful gains over basic retrieval in exploratory queries.
 
