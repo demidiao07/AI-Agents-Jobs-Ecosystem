@@ -1,5 +1,8 @@
 # Part 1, Question 1: vector DB setup
 
+# Smoke test to verify ChromaDB setup, persistence, and semantic retrieval
+# Full embedding + chunking pipeline implemented in ingestion.py
+
 import chromadb
 from chromadb.config import Settings
 
