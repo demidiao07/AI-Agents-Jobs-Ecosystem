@@ -1,4 +1,4 @@
-# Generative AI Project
+# AI Agents Jobs Ecosystem
 **Name:** Wenshu (Demi) Diao
 
 ## Overview
